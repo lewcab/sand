@@ -5,9 +5,11 @@ public class SandSystem : MonoBehaviour
 {
     public int width;
     public int height;
+    public float pixels_per_unit;
 
     private GridController gc;
     public SimulationRenderer sr;
+    public Painter p;
 
     private static readonly HashSet<ParticleType> SOLID_PARTICLE_TYPES = new()
     {
@@ -17,35 +19,8 @@ public class SandSystem : MonoBehaviour
     void Start()
     {
         gc = new GridController(width, height);
-        sr.Initialize(width, height);
-
-        // Test: spawn some piles of sand
-        for (int i = 0; i < 20; i++)
-        {
-            gc.Set((width / 2) - 5, height / 2 + i, new Particle
-            {
-                type = ParticleType.Sand,
-                side_bias = (i % 2 == 0) ? -1 : 1,
-            });
-        }
-
-        for (int j = 0; j < 10; j++)
-        {
-            gc.Set(width / 2, height / 2 + j - 6, new Particle
-            {
-                type = ParticleType.Sand,
-                side_bias = (j % 2 == 0) ? -1 : 1,
-            });
-        }
-
-        for (int k = 0; k < 30; k++)
-        {
-            gc.Set((width / 2) + 3, height / 2 + k - 11, new Particle
-            {
-                type = ParticleType.Sand,
-                side_bias = (k % 2 == 0) ? -1 : 1,
-            });
-        }
+        sr.Initialize(width, height, pixels_per_unit);
+        p.Initialize(ref gc, pixels_per_unit);
     }
 
     void FixedUpdate()

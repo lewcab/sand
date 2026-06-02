@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "name": "SimulationActions",
+    "maps": [
+        {
+            "name": "Painter",
+            "id": "5cd89721-449c-4c15-8b84-292662b4423a",
+            "actions": [
+                {
+                    "name": "Paint",
+                    "type": "Button",
+                    "id": "a3953033-ab1c-4d16-a1d1-a4bf3bdd77bf",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Erase",
+                    "type": "Button",
+                    "id": "f7d3f604-1e82-4063-982b-14ff6267b5ec",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4a461454-da0c-4e7e-b928-303bb69a476b",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Paint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d9cae803-6a14-4ecd-9451-e6dd136ab939",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Erase",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

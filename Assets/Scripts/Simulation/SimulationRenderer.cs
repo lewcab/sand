@@ -11,14 +11,12 @@ public class SimulationRenderer : MonoBehaviour
     private Color32[] pixelBuffer;
     private SpriteRenderer spriteRenderer;
 
-    private readonly float pixels_per_unit = 5f;
-
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void Initialize(int width, int height)
+    public void Initialize(int width, int height, float pixels_per_unit)
     {
         texture = new Texture2D(width, height);
         pixelBuffer = new Color32[width * height];
@@ -41,7 +39,7 @@ public class SimulationRenderer : MonoBehaviour
         {
             try
             {
-                pixelBuffer[i] = GetColor(grid[i]);
+                pixelBuffer[i] = GetColor(grid[i], i, texture.width);
             }
             catch (Exception)
             {
@@ -53,13 +51,27 @@ public class SimulationRenderer : MonoBehaviour
         texture.Apply(false);
     }
 
-    private Color32 GetColor(Particle p)
+    private Color32 GetColor(Particle p, int index, int width)
     {
-        return p.type switch
+        Color32 baseColor = p.type switch
         {
             ParticleType.Air => air_color,
             ParticleType.Sand => sand_color,
             _ => sand_color,
         };
+
+        if (p.type == ParticleType.Air) return baseColor;
+
+        // Use position hash for deterministic but varied results
+        int hash = (index * 73856093) ^ ((index / width) * 19349663);
+        float noise = ((hash ^ (hash >> 16)) & 0xFF) / 255f;
+        float variance = Mathf.Lerp(-15f, 15f, noise);
+
+        return new Color32(
+            (byte)Mathf.Clamp(baseColor.r + variance, 0, 255),
+            (byte)Mathf.Clamp(baseColor.g + variance, 0, 255),
+            (byte)Mathf.Clamp(baseColor.b + variance, 0, 255),
+            baseColor.a
+        );
     }
 }
