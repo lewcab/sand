@@ -225,7 +225,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 50
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -415,9 +415,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54978a289d73be346973cb7754eed9c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SandSystem
-  width: 50
-  height: 50
-  pixels_per_unit: 5
+  width: 100
+  height: 100
+  pixels_per_unit: 1
   sr: {fileID: 1401671230}
   p: {fileID: 1008392346}
 --- !u!4 &1154244798
