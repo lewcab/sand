@@ -59,9 +59,10 @@ public class GridController
 
     public void Swap((int x, int y) p1, (int x, int y) p2)
     {
-        Particle temp = Get(p1.x, p1.y);
-        Set(p1.x, p1.y, Get(p2.x, p2.y));
-        Set(p2.x, p2.y, temp);
+        // Read from current, write to next
+        Particle temp = Get(p1.x, p1.y, current_buffer: true);
+        Set(p1.x, p1.y, Get(p2.x, p2.y, current_buffer: true), current_buffer: false);
+        Set(p2.x, p2.y, temp, current_buffer: false);
     }
 
     public void ClearGrid(

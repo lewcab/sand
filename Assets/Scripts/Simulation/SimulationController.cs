@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SandSystem : MonoBehaviour
+public class SimulationController : MonoBehaviour
 {
     public int width;
     public int height;
@@ -38,11 +38,11 @@ public class SandSystem : MonoBehaviour
     /// </summary>
     public void Tick()
     {
-        gc.CopyGrid();
-
         for (int y = 0; y < gc.Height; y++)
             for (int x = 0; x < gc.Width; x++)
                 SimulateCell(x, y);
+
+        gc.CopyGrid(to_next: false);
     }
 
     /// <summary>
@@ -75,17 +75,32 @@ public class SandSystem : MonoBehaviour
         if (!SOLID_PARTICLE_TYPES.Contains(gc.Get(x, y - 1).type))
         {
             // Below is empty
-            gc.Swap((x, y), (x, y - 1));
+            gc.Swap(
+                (x, y),
+                (x, y - 1)
+            );
         }
-        else if (!SOLID_PARTICLE_TYPES.Contains(gc.Get(x + side_bias, y - 1).type))
+        else if (
+            gc.IsValidPosition(x + side_bias, y - 1) &&
+            !SOLID_PARTICLE_TYPES.Contains(gc.Get(x + side_bias, y - 1).type)
+        )
         {
             // Below and to the side is empty
-            gc.Swap((x, y), (x + side_bias, y - 1));
+            gc.Swap(
+                (x, y),
+                (x + side_bias, y - 1)
+            );
         }
-        else if (!SOLID_PARTICLE_TYPES.Contains(gc.Get(x - side_bias, y - 1).type))
+        else if (
+            gc.IsValidPosition(x - side_bias, y - 1) &&
+            !SOLID_PARTICLE_TYPES.Contains(gc.Get(x - side_bias, y - 1).type)
+        )
         {
             // Below and to other side is empty
-            gc.Swap((x, y), (x - side_bias, y - 1));
+            gc.Swap(
+                (x, y),
+                (x - side_bias, y - 1)
+            );
         }
     }
 }
