@@ -70,7 +70,7 @@ public class Painter : MonoBehaviour
 
     private void Paint()
     {
-        if (is_painting)
+        if (is_painting && gc.IsValidPosition(mouse_grid_position.x, mouse_grid_position.y))
         {
             Debug.Log($"Paint at {mouse_grid_position}");
             gc.Set(
@@ -79,7 +79,7 @@ public class Painter : MonoBehaviour
                 new Particle
                 {
                     type = ParticleType.Sand,
-                    side_bias = Random.Range(0, 2) - 1,
+                    side_bias = Random.Range(0, 2) == 0 ? -1 : 1,
                 }
             );
         }
@@ -87,7 +87,7 @@ public class Painter : MonoBehaviour
 
     private void Erase()
     {
-        if (is_erasing)
+        if (is_erasing && gc.IsValidPosition(mouse_grid_position.x, mouse_grid_position.y))
         {
             Debug.Log($"Erase at {mouse_grid_position}");
             gc.Set(
