@@ -38,6 +38,7 @@ public class SimulationController : MonoBehaviour
     /// </summary>
     public void Tick()
     {
+        gc.ClearGrid();
         for (int y = 0; y < gc.Height; y++)
             for (int x = 0; x < gc.Width; x++)
                 SimulateCell(x, y);
@@ -70,15 +71,14 @@ public class SimulationController : MonoBehaviour
     /// </summary>
     private void SimulateSand(int x, int y, int side_bias)
     {
-        if (!gc.IsValidPosition(x, y - 1)) return;
+        Particle p = gc.Get(x, y);
 
-        if (!SOLID_PARTICLE_TYPES.Contains(gc.Get(x, y - 1).type))
+        if (
+            gc.IsValidPosition(x, y - 1) &&
+            !SOLID_PARTICLE_TYPES.Contains(gc.Get(x, y - 1).type))
         {
             // Below is empty
-            gc.Swap(
-                (x, y),
-                (x, y - 1)
-            );
+            gc.Set(x, y - 1, p, false);
         }
         else if (
             gc.IsValidPosition(x + side_bias, y - 1) &&
@@ -86,10 +86,7 @@ public class SimulationController : MonoBehaviour
         )
         {
             // Below and to the side is empty
-            gc.Swap(
-                (x, y),
-                (x + side_bias, y - 1)
-            );
+            gc.Set(x + side_bias, y - 1, p, false);
         }
         else if (
             gc.IsValidPosition(x - side_bias, y - 1) &&
@@ -97,10 +94,12 @@ public class SimulationController : MonoBehaviour
         )
         {
             // Below and to other side is empty
-            gc.Swap(
-                (x, y),
-                (x - side_bias, y - 1)
-            );
+            gc.Set(x - side_bias, y - 1, p, false);
+        }
+        else
+        {
+            // All options reserved, stay put
+            gc.Set(x, y, p, false);
         }
     }
 }
